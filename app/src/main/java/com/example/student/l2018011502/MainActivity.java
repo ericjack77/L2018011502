@@ -150,8 +150,9 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected Bitmap doInBackground(String... strings) {
-            String str_url=strings[0];
+            String str_url = strings[0];
             URL url;
+            Bitmap bmp = null;
             try {
                 url = new URL(str_url);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -161,13 +162,12 @@ public class MainActivity extends AppCompatActivity {
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
                 byte[] buf = new byte[1024];
                 int length;
-                while((length = inputStream.read(buf)) != -1)
-                {
-                    bos.write(buf,0,length);
+                while ((length = inputStream.read(buf)) != -1) {
+                    bos.write(buf, 0, length);
                 }
                 byte[] results = bos.toByteArray();
-                final Bitmap bmp = BitmapFactory.decodeByteArray(results,0,results.length);
-                return bmp;
+                bmp = BitmapFactory.decodeByteArray(results, 0, results.length);
+
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return null;
+            return bmp;
         }
     }
 }
