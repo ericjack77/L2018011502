@@ -128,4 +128,55 @@ public class MainActivity extends AppCompatActivity {
             return "okay";
         }
     }
+
+    public void click3(View v)
+    {
+            AsyncPhoto task=new AsyncPhoto();
+            task.execute("http://campingouzouni.com/wp-content/uploads/2015/05/beach-volley.jpg");
+    }
+
+    class AsyncPhoto extends AsyncTask<String,Integer,Bitmap>
+    {
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            super.onPostExecute(bitmap);
+            iv.setImageBitmap(bitmap);
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... strings) {
+            String str_url=strings[0];
+            URL url;
+            try {
+                url = new URL(str_url);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
+                conn.connect();
+                InputStream inputStream = conn.getInputStream();
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                byte[] buf = new byte[1024];
+                int length;
+                while((length = inputStream.read(buf)) != -1)
+                {
+                    bos.write(buf,0,length);
+                }
+                byte[] results = bos.toByteArray();
+                final Bitmap bmp = BitmapFactory.decodeByteArray(results,0,results.length);
+                return bmp;
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (ProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
 }
