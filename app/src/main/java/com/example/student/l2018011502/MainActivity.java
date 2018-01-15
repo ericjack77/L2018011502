@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -20,7 +21,7 @@ import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
     ImageView iv;
-    TextView tv;
+    TextView tv,tv2,tv3;
     ProgressBar pb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         iv=findViewById(R.id.imageView);
         tv=findViewById(R.id.textView);
+        tv2=findViewById(R.id.textView2);
+        tv3=findViewById(R.id.textView3);
         pb=findViewById(R.id.progressBar);
     }
 
@@ -92,15 +95,37 @@ public class MainActivity extends AppCompatActivity {
 
     public void click2(View v)
     {
-
+        MyTask task =new MyTask();
+        task.execute(5);
     }
 
-    class Mythread extends AsyncTask<Integer,Integer,String>
+    class MyTask extends AsyncTask<Integer,Integer,String>
     {
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            tv3.setText(s);
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            tv2.setText(String.valueOf(values[0]));
+        }
 
         @Override
         protected String doInBackground(Integer... integers) {
-            return null;
+            for(int i=0;i<=integers[0];i++)
+            {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                Log.d("NET", "doInBackground,i="+i);
+                publishProgress(i);//發佈進度 給onProgressUpdate
+            }
+            return "okay";
         }
     }
 }
