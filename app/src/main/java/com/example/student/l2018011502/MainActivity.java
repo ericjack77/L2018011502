@@ -2,6 +2,7 @@ package com.example.student.l2018011502;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -87,5 +88,19 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }.start();
+    }
+
+    public void click2(View v)
+    {
+
+    }
+
+    class Mythread extends AsyncTask<Integer,Integer,String>
+    {
+
+        @Override
+        protected String doInBackground(Integer... integers) {
+            return null;
+        }
     }
 }
